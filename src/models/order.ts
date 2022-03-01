@@ -1,7 +1,7 @@
 import Client from '../database';
 
 export type Order = {
-    id: number
+    id?: number
     product_id: number
     user_id: number
     quantity: number
@@ -11,17 +11,15 @@ export type Order = {
 export class OrderStore {
     /** Retreives the current order by the user's Id */
     async currentOrderByUser(userId: number): Promise<Order> {
-        console.log('CURRENT ORDER BY USER: ', userId)
         try {
-            const sql = `SELECT id, product_id, user_id, quantity, order_status FROM orders WHERE user_id = ${userId};`
             const conn = await Client.connect()
-            const result = await conn.query(sql, [userId])
+            const sql = `SELECT id, product_id, user_id, quantity, order_status FROM orders WHERE user_id=(${userId});`
+            const result = await conn.query(sql)
             const currentOrder = result.rows[0]
             conn.release()
             return currentOrder
         } catch (error) {
-            // TODO: We need to return an error back tot he client itself...
-            throw new Error(`Could not get orders for the userId of: ${userId}.`)
+            throw new Error(`Could not get orders for the userId of: ${userId}. Error: ${error}`)
         }
     }
 
@@ -39,18 +37,34 @@ export class OrderStore {
     }
 
     // TODO: Test the insert statement to create a new order
-    async create(): Promise<Order> {
+    async create(product_id: number, user_id: number, quantity: number, order_status: string): Promise<Order> {
         try { 
+            console.log(product_id);
+            console.log(user_id);
+            console.log(quantity);
+            console.log(order_status);
+
             const conn = await Client.connect()
-            const sql = 'INSERT STATEMENT FOR AN ORDER GOES HERE'
-            const result = await conn.query(sql)
-            conn.release()
+            const sql = 'INSERT INTO orders (product_id, user_id, quantity, order_status) VALUES ($1, $2, $3, $4) RETURNING *'
+            const result = await conn.query(sql, [product_id, user_id, quantity, order_status])
             const order = result.rows[0]
-            return order
+
+            console.log(order)
+            
+            const newOrder = {
+                id: order.id,
+                product_id: order.product_id,
+                user_id: order.user_id,
+                quantity: order.quantity,
+                order_status: order.order_status
+            }
+
+            conn.release()
+            console.log(newOrder)
+            return newOrder
         } catch(error) {
-            throw new Error('Unable to create a new order.')
+            throw new Error(`Unable to create a new order. ${error}`)
         }
     }
-    
 }
 

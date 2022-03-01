@@ -31,7 +31,7 @@ Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar,
 **NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
 
 ### 2.  DB Creation and Migrations
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+Now that you have the structure of the database outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
 
 You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
 
@@ -54,8 +54,31 @@ Ensure that you have postgres installed on our development computer before proce
 
 To install postgres if you are new to it follow the instructions here: https://www.postgresql.org/docs/9.3/tutorial-install.html
 
+Once this is completed some other configuration must be performed before you will be able to target the database.
+
+1. Create a .env file this will be used to hold various variables for bcrypt, salt rounds, envionrment, and database configuration such as host, db, test db, the database user and password. 
+
+Sample .env file:
+POSTGRES_HOST=127.0.0.1
+POSTGRES_DB=storefront
+POSTGRES_TEST_DB=storefront_test
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=my-password
+BCRYPT_PASSWORD=my-secret-password
+SALT_ROUNDS=10
+TOKEN_SECRET=this-is-my-super-long-super-secret-token-secret
+ENV=dev
+
+There is one thing to note I have had to set both the db and test db to run the tests properly and then set the db to storefront when I am testing with postman. Not sure why.
+
+2. Create the two databases needed in postgres named storefront and storefront_test respectfully. This allows us to seperate our development data from our testing data as testing data should be cleared after the test are run succesfully.
+
+If the tests do not run successfully the test database will not clear this can mean commenting out different tests in order for it to clear while you are troubleshooting which can lead to a increase cognitive load beware.
+
+
 ### 8. Ports for the database
-The ports being used for the database is the default postgres port of 5432.
+The ports being used for the database is the default postgres port of 5432 and localhost 127.0.0.1 on port 3000 for the express app.
 
 ### 9. Database Schema
 -- TODO: Fill out the database schema.
+

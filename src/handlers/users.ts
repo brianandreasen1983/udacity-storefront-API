@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response} from 'express'
 import { User, UserStore } from '../models/user'
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt, { JsonWebTokenError, verify } from 'jsonwebtoken'
 
 const userStore = new UserStore()
 
@@ -31,10 +31,6 @@ const create = async(req: Request, res: Response) => {
         const firstName = req.body.firstName
         const lastName = req.body.lastName
         const password = req.body.password
-
-        console.log(firstName)
-        console.log(lastName)
-        console.log(password)
 
     try {
         const newUser = await userStore.create(firstName, lastName, password)
@@ -67,10 +63,8 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
 }
 
 const userRoutes = (app: express.Application) => {
-    // TODO: Needs to be protected by the AuthToken verifyAuthToken
-    app.get('/users', index)
-    // TODO: Needs to be protected by the AuthToken verifyAuthToken
-    app.get('/users/:id', show)
+    app.get('/users', verifyAuthToken, index)
+    app.get('/users/:id', verifyAuthToken, show)
     app.post('/users', create)
 }
 

@@ -47,9 +47,6 @@ const create = async (req, res) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const password = req.body.password;
-    console.log(firstName);
-    console.log(lastName);
-    console.log(password);
     try {
         const newUser = await userStore.create(firstName, lastName, password);
         const tokenSecret = process.env.TOKEN_SECRET;

@@ -35,7 +35,6 @@ export class ProductStore {
                 price: product.price
             }
 
-            console.log(returnedProduct)
             conn.release()
             return returnedProduct
         } catch (error) {
@@ -43,7 +42,7 @@ export class ProductStore {
         }
     }
 
-    /** Inserts a new product into the database. */
+    /** Creates a product to be inserted into the database. */
     async create(p: Product): Promise<Product> {
         try {
             const conn = await Client.connect()

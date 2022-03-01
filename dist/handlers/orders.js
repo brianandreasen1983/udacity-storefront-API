@@ -46,7 +46,14 @@ const index = async (req, res) => {
 };
 const create = async (req, res) => {
     try {
-        // TODO: Code to be able to create an order as needed.
+        // const orderId: number = parseInt(req.params.orderId);
+        const productId = req.body.productId;
+        const userId = req.body.userId;
+        const quantity = req.body.quantity;
+        const orderStatus = req.body.orderStatus;
+        const order = await orderStore.create(productId, userId, quantity, orderStatus);
+        res.status(200);
+        res.json(order);
     }
     catch (error) {
         throw new Error('An error occurred while trying to create a new order.');

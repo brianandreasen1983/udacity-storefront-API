@@ -29,7 +29,6 @@ export class UserStore {
             const sql = `SELECT id, firstname, lastname FROM users WHERE id=(${userId});`
             const result = await conn.query(sql)
             const user: User = result.rows[0]
-            console.log(user)
             conn.release()
             return user
         } catch (error) {
@@ -43,15 +42,15 @@ export class UserStore {
             const saltRounds = process.env.SALT_ROUNDS
             const pepper = process.env.BCRYPT_PASSWORD
             const conn = await Client.connect()
-            const sql = 'INSERT INTO users (firstname, lastname, password) VALUES ($1, $2, $3) RETURNING *'
-
 
             const hash = bcrypt.hashSync(
                 password + pepper, 
                 parseInt(saltRounds!)
               );
 
+            const sql = 'INSERT INTO users (firstname, lastname, password) VALUES ($1, $2, $3) RETURNING *'
             const result = await conn.query(sql, [firstName, lastName, hash])
+
             const user = result.rows[0]
 
             const newUser = {

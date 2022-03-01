@@ -17,22 +17,20 @@ describe("Product Model", () => {
         expect(productStore.create).toBeDefined();
     });
 
-    // TODO: Issue is unable to create product becuase the relation products does not exist.
     // it('create method should create a single product', async () => {
     //     const product: Product = {
     //         name: "Banana",
-    //         price: 1.00
+    //         price: 1
     //     }
     
     //     const result = await productStore.create(product)
     //     expect(result).toEqual({
     //         id: productId,
     //         name: "Banana",
-    //         price: 1.00
+    //         price: 1
     //     })
     // });
 
-    // TODO: Will not be solvable until create is solved.
     // it('show method should return a single product', async () => {
     //     const result = await productStore.show(productId)
     //     expect(result).toEqual({
@@ -42,13 +40,12 @@ describe("Product Model", () => {
     //     })
     // });
     
-    // TODO: Will not be solvable until create is solved.
     // it('index method should return a list of products', async () => {
     //     const result = await productStore.index();
     //     expect(result).toEqual([{
     //         id: productId,
     //         name: "Banana",
-    //         price: 1.00
+    //         price: 1
     //     },])
     // });
 });

@@ -4,15 +4,19 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
-    app.get('/orders', index)
-    app.get('/orders/:id', show)
-    app.post('/orders/:id/products', addProduct)
-    app.post('/orders/:userid')
+    Orders
+    app.get('/orders, index)
+    app.get('/orders/:userid', currentOrderByUserId, verifyAuthToken) -- requires token
+    app.post('/orders, create)
+    
+    Products
     app.get('/products', index)
     app.get('/products/:id', show)
-    app.post('/products', create)
-    app.get('/users', index)
-    app.get('/users/:id', show)
+    app.post('/products',verifyAuthToken, create) -- requires token
+
+    Users
+    app.get('/users', verifyAuthToken, index) -- requires token
+    app.get('/users/:id', verifyAuthToken, show) -- requires token
     app.post('/users', create)
 
 #### Products

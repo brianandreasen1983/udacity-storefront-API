@@ -31,7 +31,6 @@ class ProductStore {
                 name: product.name,
                 price: product.price
             };
-            console.log(returnedProduct);
             conn.release();
             return returnedProduct;
         }
